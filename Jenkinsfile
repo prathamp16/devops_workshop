@@ -20,16 +20,6 @@ pipeline {
             steps {
                 echo 'STAGE 2: Installing dependencies and building...'
                 sh '''
-                    export NVM_DIR="/home/cse/.nvm"
-                    
-                    if ! command -v node &> /dev/null; then
-                      LATEST_NVM_NODE=$(ls -d "$NVM_DIR/versions/node/"* 2>/dev/null | tail -n 1)
-                      if [ -n "$LATEST_NVM_NODE" ]; then
-                        export PATH="$LATEST_NVM_NODE/bin:$PATH"
-                      fi
-                    fi
-                    export PATH="/usr/local/bin:/usr/bin:/bin:$PATH"
-                    
                     npm install
                     npm run build
                 '''
