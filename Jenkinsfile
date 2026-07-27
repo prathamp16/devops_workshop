@@ -18,28 +18,19 @@ pipeline {
 
         stage('2. Install & Build') {
             steps {
-                echo '=================================================='
                 echo 'STAGE 2: Installing dependencies and building...'
-                echo '=================================================='
                 sh '''
+                    export NVM_DIR="/home/cse/.nvm"
+                    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+                    
+                    # Fallback path lookup just in case
                     if ! command -v node &> /dev/null; then
-                      if [ -d "$HOME/.nvm/versions/node" ]; then
-                        LATEST_NVM_NODE=$(ls -d "$HOME/.nvm/versions/node/"* 2>/dev/null | tail -n 1)
-                        if [ -n "$LATEST_NVM_NODE" ]; then
-                          export PATH="$LATEST_NVM_NODE/bin:$PATH"
-                        fi
+                      LATEST_NVM_NODE=$(ls -d "$NVM_DIR/versions/node/"* 2>/dev/null | tail -n 1)
+                      if [ -n "$LATEST_NVM_NODE" ]; then
+                        export PATH="$LATEST_NVM_NODE/bin:$PATH"
                       fi
                     fi
                     export PATH="/usr/local/bin:/usr/bin:/bin:$PATH"
-                    
-                    # --- DEBUGGING LINES TO FIND THE ISSUE ---
-                    echo "Current User: $(whoami)"
-                    echo "Home Directory: $HOME"
-                    echo "Resolved PATH: $PATH"
-                    which node || echo "Node not found in PATH"
-                    which npm || echo "NPM not found in PATH"
-                    node -v || echo "Node version check failed"
-                    # ----------------------------------------
                     
                     npm install
                     npm run build
