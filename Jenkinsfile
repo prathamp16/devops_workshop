@@ -32,6 +32,15 @@ pipeline {
                     fi
                     export PATH="/usr/local/bin:/usr/bin:/bin:$PATH"
                     
+                    # --- DEBUGGING LINES TO FIND THE ISSUE ---
+                    echo "Current User: $(whoami)"
+                    echo "Home Directory: $HOME"
+                    echo "Resolved PATH: $PATH"
+                    which node || echo "Node not found in PATH"
+                    which npm || echo "NPM not found in PATH"
+                    node -v || echo "Node version check failed"
+                    # ----------------------------------------
+                    
                     npm install
                     npm run build
                 '''
