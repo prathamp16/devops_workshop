@@ -21,9 +21,7 @@ pipeline {
                 echo 'STAGE 2: Installing dependencies and building...'
                 sh '''
                     export NVM_DIR="/home/cse/.nvm"
-                    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
                     
-                    # Fallback path lookup just in case
                     if ! command -v node &> /dev/null; then
                       LATEST_NVM_NODE=$(ls -d "$NVM_DIR/versions/node/"* 2>/dev/null | tail -n 1)
                       if [ -n "$LATEST_NVM_NODE" ]; then
